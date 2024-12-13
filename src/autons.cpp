@@ -45,15 +45,21 @@ void odom_test(){
     Brain.Screen.printAt(5,60, "Heading: %f", chassis.get_absolute_heading());
     Brain.Screen.printAt(5,80, "ForwardTracker: %f", chassis.get_ForwardTracker_position());
     Brain.Screen.printAt(5,100, "SidewaysTracker: %f", chassis.get_SidewaysTracker_position());
-    task::sleep(20);
+    wait(0.02,sec);
   }
 }
+void setGrab(bool value) {
+  grab.set(!value);
+}
 
+
+//fixed this false is now true //fixed
 void RB_RUSH(){
 odom_constants();
 conveyor.setVelocity(100, percent);
 intake.setVelocity(100, percent);
 chassis.set_coordinates(0,0,0);
+
 //grab mogo
 chassis.drive_distance(-5, 0);//can change settle time per movement after two more commas
 chassis.turn_to_angle(335, 5.5);
@@ -86,13 +92,14 @@ chassis.drive_distance(-27, -90);
 
 
 }
-
+//fixed
 void rednegative(){
   
 odom_constants();
 conveyor.setVelocity(100,percent);
 intake.setVelocity(100,percent);
 chassis.set_coordinates(0,0,0);
+
 
 //mogo
 chassis.drive_distance(-14, 0);
@@ -123,16 +130,18 @@ chassis.drive_distance(-26, 90);
 
 }
 
+//fixed for new clamp // fixed
 void testaoqiRed() {
    odom_constants();
 conveyor.setVelocity(100, percent);
 intake.setVelocity(100, percent);
 chassis.set_coordinates(0,0,-270);
 
+
 //grabs first ring
 chassis.turn_to_angle(-250);
-chassis.drive_distance(7,-250);
-intake.spinFor(reverse, 0.1, seconds);
+chassis.drive_distance(7,-250,9,9);
+intake.spinFor(reverse, 0.15, seconds);
 wait(0.1,sec);
 intake.spin(forward);
 wait(.5, sec);
@@ -142,7 +151,7 @@ conveyor.spinFor(forward,0.5,seconds);
 
 //scores on wall stake
 chassis.turn_to_angle(-338);
-chassis.drive_distance(11);
+chassis.drive_distance(11,-338,10,12);
 lift.spinToPosition(-775,degrees,true);
 
 //grabs mogo
@@ -163,11 +172,14 @@ wait(0.2,sec);
 
 }
 
+
+//fixed for new clamp //fixed
 void testaoqi() {
   odom_constants();
 conveyor.setVelocity(100, percent);
 intake.setVelocity(100, percent);
 chassis.set_coordinates(0,0,270);
+
 
 //grabs first ring
 chassis.turn_to_angle(250);
@@ -353,10 +365,10 @@ lift.spinTo(-140,deg,true);
 //works optical sensor just isnt registering in the code
 while (true) {
  if (Optical.hue() > 230 && Optical.hue() < 240) {
-  vex::task::sleep(200);
+  //vex::task::sleep(200);
   conveyor.stop();
   lift.spinTo(-400,deg,true);
-  vex::task::sleep(1);
+  //vex::task::sleep(1);
   lift.spinTo(0,deg,true);
 }
 
@@ -384,29 +396,95 @@ lift.spinTo(0,deg,true);
 }
  }
 
+
+
+
+
 void testDrive() {
   odom_constants();
   conveyor.setVelocity(70, percent);
   intake.setVelocity(100, percent);
   chassis.set_coordinates(0,0,0);
+  chassis.drive_timeout = 10000;
+  chassis.drive_distance(25);  
 
-  chassis.drive_distance(0);
-  chassis.turn_to_angle(0);
-
-  chassis.drive_distance(100);
-  chassis.turn_to_angle(90);
-  chassis.drive_distance(100);
-  chassis.turn_to_angle(0);
-  chassis.drive_distance(100);
-  chassis.turn_to_angle(270);
-  chassis.drive_distance(100);
-
-
-
-
-
+  
 
 }
-
 //waitUntil command
-//this is my change on the mac
+
+
+/*
+@brief this is a match auton for the red side during eliminations.
+the goal of this is to score 5 rings from the minus corner and get as close to corner as possible
+*/
+void redMinusElims() {
+
+odom_constants();
+conveyor.setVelocity(100, percent);
+intake.setVelocity(100, percent);
+chassis.set_coordinates(0,0,270);
+
+//grabs ring 1
+chassis.turn_to_angle(250);
+chassis.drive_distance(7,250);
+intake.spinFor(reverse, 0.1, seconds);
+wait(0.1,sec);
+intake.spin(forward);
+wait(.5, sec);
+intake.stop();
+chassis.drive_distance(-.5,250);
+conveyor.spinFor(forward,0.5,seconds);
+
+//scores on wall stake
+chassis.turn_to_angle(340);
+chassis.drive_distance(11);
+lift.spinToPosition(-775,degrees,true);
+
+//grabs mogo
+chassis.turn_to_angle(330);
+//lift.spinToPosition(-350,degrees,false);
+intake.spin(forward);
+chassis.drive_distance(-35, 330);
+grab.set(true);
+}
+
+void testaoqiBlueImprobv() {
+ odom_constants();
+conveyor.setVelocity(100, percent);
+intake.setVelocity(100, percent);
+chassis.set_coordinates(0,0,270);
+
+//grabs first ring
+chassis.turn_to_angle(250);
+chassis.drive_distance(6.4,250);
+intake.spinFor(reverse, 0.1, seconds);
+wait(0.1,sec);
+intake.spin(forward);
+wait(.5, sec);
+intake.stop();
+conveyor.spinFor(forward,0.5,seconds);
+
+//scores on wall stake
+chassis.turn_to_angle(338);
+chassis.drive_distance(11);
+lift.spinToPosition(-775,degrees,true);
+
+//goes to second mogo
+chassis.turn_to_angle(335);
+lift.spinToPosition(-350,degrees,false);
+intake.spin(forward);
+chassis.drive_distance(-37, 335);
+grab.set(true);
+
+//loads ring and goes for ladder
+conveyor.spin(forward);
+wait(0.5,seconds);
+chassis.turn_to_angle(81);
+chassis.drive_distance(20, 81);
+wait(.7,sec);
+//lift.spinToPosition(-145,degrees,false);
+chassis.drive_distance(-36, 80);
+wait(0.2,sec);
+
+}

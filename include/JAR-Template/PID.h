@@ -3,7 +3,7 @@
 
 /**
  * General-use PID class for drivetrains. It includes both
- * control calculation and settling calculation. The default
+ * control caculation and settling calculation. The default
  * update period is 10ms or 100Hz.
  */
 

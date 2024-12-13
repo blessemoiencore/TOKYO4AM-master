@@ -107,13 +107,20 @@ PORT3,     -PORT4,
 
 int current_auton_selection = 6;
 bool auto_started = false;
-
+bool opticalAutonOn = true;
 /**
  * Function before autonomous. It prints the current auton number on the screen
  * and tapping the screen cycles the selected auton by 1. Add anything else you
  * may need, like resetting pneumatic components. You can rename these autons to
  * be more descriptive, if you like.
  */
+
+
+void opticalDetect() {
+  while(opticalAutonOn) {
+    //code
+  }
+}
 
 void pre_auton() {
   // Initializing Robot Configuration. DO NOT REMOVE!
@@ -153,12 +160,17 @@ void pre_auton() {
       case 7:
         Brain.Screen.printAt(5, 140, "Auton 8");
         break;
+      case 8:
+        Brain.Screen.printAt(5,140,"Auton 9");
+        break;
     }
     if(Brain.Screen.pressing()){
-      while(Brain.Screen.pressing()) {}
+      while(Brain.Screen.pressing()) {
       current_auton_selection ++;
+      
+      }
     } else if (current_auton_selection < 0){
-      current_auton_selection = 3;
+      current_auton_selection = 0;
     }
     task::sleep(10);
   }
@@ -172,6 +184,9 @@ void pre_auton() {
  */
 
 void autonomous(void) {
+
+  //put optical sensor function here I think
+  //or try writing a function outside of previous functions and run it in main
   auto_started = true;
   switch(current_auton_selection){ 
      case 0:
@@ -201,6 +216,15 @@ void autonomous(void) {
   case 6:
   testDrive();
   break;
+
+  case 7:
+  redMinusElims();
+  break;
+
+  case 8:
+  testaoqiBlueImprobv();
+  break;
+
  }
 }
 
@@ -215,6 +239,7 @@ void autonomous(void) {
 /*---------------------------------------------------------------------------*/
 
 void usercontrol(void) {
+  opticalAutonOn = false;
   // User control code here, inside the loop
   while (1) {
     // This is the main execution loop for the user control program.
@@ -290,6 +315,9 @@ int main() {
 
   intake.setVelocity(100, percent);
     lift.setVelocity(100, percent);
+
+    //opticalDetect();
+
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
