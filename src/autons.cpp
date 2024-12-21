@@ -134,7 +134,7 @@ chassis.drive_distance(-26, 90);
 void testaoqiRed() {
    odom_constants();
 conveyor.setVelocity(100, percent);
-intake.setVelocity(100, percent);
+intake.setVelocity(0, percent);
 chassis.set_coordinates(0,0,-270);
 
 
@@ -173,13 +173,12 @@ wait(0.2,sec);
 }
 
 
-//fixed for new clamp //fixed
+//fixed for new clamp //fixed //x
 void testaoqi() {
   odom_constants();
 conveyor.setVelocity(100, percent);
-intake.setVelocity(100, percent);
+intake.setVelocity(0, percent);
 chassis.set_coordinates(0,0,270);
-
 
 //grabs first ring
 chassis.turn_to_angle(250);
@@ -365,48 +364,45 @@ lift.spinTo(-140,deg,true);
 //works optical sensor just isnt registering in the code
 while (true) {
  if (Optical.hue() > 230 && Optical.hue() < 240) {
-  //vex::task::sleep(200);
+  vex::task::sleep(200);
   conveyor.stop();
   lift.spinTo(-400,deg,true);
-  //vex::task::sleep(1);
+  vex::task::sleep(1);
   lift.spinTo(0,deg,true);
 }
 
 
  if (Optical.hue() <= 20 || Optical.hue() >= 320) {
-  //lift.spinTo(-140,deg,true);
-  //conveyor.setVelocity(20,percent);
-  //vex::task::sleep(430);
+  lift.spinTo(-140,deg,true);
+  conveyor.setVelocity(20,percent);
+  vex::task::sleep(430);
   conveyor.stop();
 lift.spinTo(-800,deg,true);
-//vex::task::sleep(1);
+vex::task::sleep(1);
 lift.spinTo(0,deg,true);
-//break;
-
-
-/*if(Optical.isNearObject()) {
-  lift.spinTo(-400,deg,true);
-  lift.spinTo(0,deg,true);
-
-}
-*/
-
-}
-
-}
  }
 
-
+}
+ };
 
 
 
 void testDrive() {
+  //vex::task::skibidiMcgee(opticalDetect);
+
   odom_constants();
-  conveyor.setVelocity(70, percent);
+  conveyor.setVelocity(65, percent);
   intake.setVelocity(100, percent);
   chassis.set_coordinates(0,0,0);
-  chassis.drive_timeout = 10000;
-  chassis.drive_distance(25);  
+  lift.spinTo(-140,deg);
+  chassis.drive_distance(-6);
+
+  //try out "lead"; lower lead means less curve; high lead big curve
+  //check for imu vibration
+  //setback is just offset
+  chassis.drive_to_pose(1,2,3);
+
+
 
   
 
@@ -453,38 +449,9 @@ void testaoqiBlueImprobv() {
  odom_constants();
 conveyor.setVelocity(100, percent);
 intake.setVelocity(100, percent);
-chassis.set_coordinates(0,0,270);
+chassis.set_coordinates(-67,0,270);
+chassis.turn_to_angle(240);
+chassis.drive_to_pose(-24,24,0);
 
-//grabs first ring
-chassis.turn_to_angle(250);
-chassis.drive_distance(6.4,250);
-intake.spinFor(reverse, 0.1, seconds);
-wait(0.1,sec);
-intake.spin(forward);
-wait(.5, sec);
-intake.stop();
-conveyor.spinFor(forward,0.5,seconds);
-
-//scores on wall stake
-chassis.turn_to_angle(338);
-chassis.drive_distance(11);
-lift.spinToPosition(-775,degrees,true);
-
-//goes to second mogo
-chassis.turn_to_angle(335);
-lift.spinToPosition(-350,degrees,false);
-intake.spin(forward);
-chassis.drive_distance(-37, 335);
-grab.set(true);
-
-//loads ring and goes for ladder
-conveyor.spin(forward);
-wait(0.5,seconds);
-chassis.turn_to_angle(81);
-chassis.drive_distance(20, 81);
-wait(.7,sec);
-//lift.spinToPosition(-145,degrees,false);
-chassis.drive_distance(-36, 80);
-wait(0.2,sec);
 
 }

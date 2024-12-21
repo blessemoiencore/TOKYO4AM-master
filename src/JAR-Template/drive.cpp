@@ -1,4 +1,5 @@
 #include "vex.h"
+#include <math.h>
 
 /**
  * Drive constructor for the chassis.
@@ -720,6 +721,32 @@ void Drive::control_tank(){
   float rightthrottle = deadband(controller(primary).Axis2.value(), 5);
   DriveL.spin(fwd, to_volt(leftthrottle), volt);
   DriveR.spin(fwd, to_volt(rightthrottle), volt);
+
+}
+
+
+/** 
+* @brief function that drives in an arc
+* @param radius the radius of the arc desired
+* @param maxVoltage max voltage of the robot
+* @param minVoltage minimum voltage of the robot, used for chaining
+* @param 
+*/ 
+void Drive::driveArc(float X_position, float Y_position, float radius, float maxVoltage, float minVoltage) {
+  driveArc(X_position, Y_position, radius, maxVoltage, minVoltage);
+}
+
+void Drive::driveArc(float X_position, float Y_position, float radius, float maxVoltage, float minVoltage) {
+  float startX = chassis.get_X_position();
+  float startY = chassis.get_Y_position();
+  float cosTheta = ((startX * X_position) + (Y_position * startY)) / (radius * radius);
+  
+  // clamping the values between 1 and -1
+  cosTheta = clamp(cosTheta, -1, 1);
+
+  float theta = acos(cosTheta);
+  float angularVelocity = (theta / maxVoltage);
+  task::sleep(10);
 }
 
 /**

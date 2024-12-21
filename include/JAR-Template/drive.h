@@ -143,7 +143,7 @@ public:
   void turn_to_point(float X_position, float Y_position, float extra_angle_deg, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout);
   void turn_to_point(float X_position, float Y_position, float extra_angle_deg, float turn_max_voltage, float turn_settle_error, float turn_settle_time, float turn_timeout, float turn_kp, float turn_ki, float turn_kd, float turn_starti);
   
-  //void driveArc(float X_position, float Y_position);
+  void driveArc(float X_position, float Y_position, float radius, float maxVoltage, float minVoltage);
 
   void holonomic_drive_to_pose(float X_position, float Y_position);
   void holonomic_drive_to_pose(float X_position, float Y_position, float angle);

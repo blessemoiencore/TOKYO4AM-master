@@ -116,11 +116,23 @@ bool opticalAutonOn = true;
  */
 
 
-void opticalDetect() {
-  while(opticalAutonOn) {
-    //code
+
+
+void opticalDetect() 
+{
+  while(opticalAutonOn) 
+  {
+      if (Optical.hue() > 10 && Optical.hue() < 20) 
+      {
+        vex::task::sleep(160);
+          conveyor.stop();
+          lift.spinTo(-700,deg,true);
+          vex::task::sleep(1000);
+          lift.spinTo(-140,deg,true);
+      }
+      vex::task::sleep(20);
   }
-}
+};
 
 void pre_auton() {
   // Initializing Robot Configuration. DO NOT REMOVE!
@@ -137,39 +149,39 @@ void pre_auton() {
     Brain.Screen.printAt(5, 120, "Selected Auton:");
     switch(current_auton_selection){
       case 0:
-        Brain.Screen.printAt(5, 140, "Auton 1");
+        Brain.Screen.printAt(5, 140, "Skills practice");
         break;
       case 1:
-        Brain.Screen.printAt(5, 140, "Auton 2");
+        Brain.Screen.printAt(5, 140, "RB_rush");
         break;
       case 2:
-        Brain.Screen.printAt(5, 140, "Auton 3");
+        Brain.Screen.printAt(5, 140, "rednegative");
         break;
       case 3:
-        Brain.Screen.printAt(5, 140, "Auton 4");
+        Brain.Screen.printAt(5, 140, "blueGoalside");
         break;
       case 4:
-        Brain.Screen.printAt(5, 140, "Auton 5");
+        Brain.Screen.printAt(5, 140, "redGoalside");
         break;
       case 5:
-        Brain.Screen.printAt(5, 140, "Auton 6");
+        Brain.Screen.printAt(5, 140, "Optical test");
         break;
       case 6:
-        Brain.Screen.printAt(5, 140, "Auton 7");
+        Brain.Screen.printAt(5, 140, "testDrive");
         break;
       case 7:
-        Brain.Screen.printAt(5, 140, "Auton 8");
+        Brain.Screen.printAt(5, 140, "test1");
         break;
       case 8:
-        Brain.Screen.printAt(5,140,"Auton 9");
+        Brain.Screen.printAt(5,140,"test2blue");
         break;
     }
     if(Brain.Screen.pressing()){
-      while(Brain.Screen.pressing()) {
+      while(Brain.Screen.pressing()) {}
       current_auton_selection ++;
       
-      }
-    } else if (current_auton_selection < 0){
+      
+    } else if (current_auton_selection > 8){
       current_auton_selection = 0;
     }
     task::sleep(10);
@@ -185,8 +197,12 @@ void pre_auton() {
 
 void autonomous(void) {
 
-  //put optical sensor function here I think
-  //or try writing a function outside of previous functions and run it in main
+  /*
+  if(current_auton_selection == 6) {
+vex::task::SkibidiMcgee(opticalDetect);
+  }
+  */
+
   auto_started = true;
   switch(current_auton_selection){ 
      case 0:
@@ -226,6 +242,7 @@ void autonomous(void) {
   break;
 
  }
+
 }
 
 /*---------------------------------------------------------------------------*/
@@ -252,9 +269,9 @@ void usercontrol(void) {
     // ........................................................................
 
    if(Controller1.ButtonR1.pressing()) {
-      conveyor.spin(forward,100,percent);
+      conveyor.spin(forward,75,percent);
     } else if(Controller1.ButtonR2.pressing()) {
-      conveyor.spin(reverse,100,percent);
+      conveyor.spin(reverse,75,percent);
     } else {
       conveyor.stop();
     }
@@ -316,7 +333,10 @@ int main() {
   intake.setVelocity(100, percent);
     lift.setVelocity(100, percent);
 
-    //opticalDetect();
+  if(current_auton_selection == 6) {
+  opticalDetect();
+  }
+
 
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
