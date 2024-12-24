@@ -233,14 +233,6 @@ vex::task::SkibidiMcgee(opticalDetect);
   testDrive();
   break;
 
-  case 7:
-  redMinusElims();
-  break;
-
-  case 8:
-  testaoqiBlueImprobv();
-  break;
-
  }
 
 }

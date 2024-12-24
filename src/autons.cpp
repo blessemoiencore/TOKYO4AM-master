@@ -401,57 +401,12 @@ void testDrive() {
   //check for imu vibration
   //setback is just offset
   chassis.drive_to_pose(1,2,3);
+  //waitUntil(intake.spin)
 
 
 
   
 
 }
-//waitUntil command
 
 
-/*
-@brief this is a match auton for the red side during eliminations.
-the goal of this is to score 5 rings from the minus corner and get as close to corner as possible
-*/
-void redMinusElims() {
-
-odom_constants();
-conveyor.setVelocity(100, percent);
-intake.setVelocity(100, percent);
-chassis.set_coordinates(0,0,270);
-
-//grabs ring 1
-chassis.turn_to_angle(250);
-chassis.drive_distance(7,250);
-intake.spinFor(reverse, 0.1, seconds);
-wait(0.1,sec);
-intake.spin(forward);
-wait(.5, sec);
-intake.stop();
-chassis.drive_distance(-.5,250);
-conveyor.spinFor(forward,0.5,seconds);
-
-//scores on wall stake
-chassis.turn_to_angle(340);
-chassis.drive_distance(11);
-lift.spinToPosition(-775,degrees,true);
-
-//grabs mogo
-chassis.turn_to_angle(330);
-//lift.spinToPosition(-350,degrees,false);
-intake.spin(forward);
-chassis.drive_distance(-35, 330);
-grab.set(true);
-}
-
-void testaoqiBlueImprobv() {
- odom_constants();
-conveyor.setVelocity(100, percent);
-intake.setVelocity(100, percent);
-chassis.set_coordinates(-67,0,270);
-chassis.turn_to_angle(240);
-chassis.drive_to_pose(-24,24,0);
-
-
-}
