@@ -732,20 +732,27 @@ void Drive::control_tank(){
 * @param minVoltage minimum voltage of the robot, used for chaining
 * @param 
 */ 
-void Drive::driveArc(float X_position, float Y_position, float radius, float maxVoltage, float minVoltage) {
-  driveArc(X_position, Y_position, radius, maxVoltage, minVoltage);
+void Drive::driveArc(float X_position, float Y_position, float radius, bool clockwise, float maxVoltage, float minVoltage) {
+  driveArc(X_position, Y_position, radius, clockwise, maxVoltage, minVoltage);
 }
 
-void Drive::driveArc(float X_position, float Y_position, float radius, float maxVoltage, float minVoltage) {
+void Drive::driveArc(float X_position, float Y_position, float radius, bool clockwise, float maxVoltage, float minVoltage) {
   float startX = chassis.get_X_position();
   float startY = chassis.get_Y_position();
   float cosTheta = ((startX * X_position) + (Y_position * startY)) / (radius * radius);
   
   // clamping the values between 1 and -1
   cosTheta = clamp(cosTheta, -1, 1);
-
   float theta = acos(cosTheta);
-  float angularVelocity = (theta / maxVoltage);
+  float target_distance = hypot(X_position-startX,Y_position-startY);
+  PID drivePID(target_distance, drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
+  PID headingPID();
+
+  while(!drivePID.is_settled()) {
+    drivePID.compute(target_distance);
+  }
+
+
   task::sleep(10);
 }
 
