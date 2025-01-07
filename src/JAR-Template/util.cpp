@@ -217,3 +217,11 @@ float clamp_min_voltage(float drive_output, float drive_min_voltage){
   }
   return drive_output;
 }
+
+/** 
+this is for ignoring task error
+*/
+
+inline void chill(int ms) {
+  vex::task::sleep(ms);
+}

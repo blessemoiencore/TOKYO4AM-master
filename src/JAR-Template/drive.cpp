@@ -1,5 +1,6 @@
 #include "vex.h"
 #include <math.h>
+#include "util.h"
 
 /**
  * Drive constructor for the chassis.
@@ -732,6 +733,8 @@ void Drive::control_tank(){
 * @param minVoltage minimum voltage of the robot, used for chaining
 * @param 
 */ 
+
+/*
 void Drive::driveArc(float X_position, float Y_position, float radius, bool clockwise, float maxVoltage, float minVoltage) {
   driveArc(X_position, Y_position, radius, clockwise, maxVoltage, minVoltage);
 }
@@ -746,7 +749,6 @@ void Drive::driveArc(float X_position, float Y_position, float radius, bool cloc
   float theta = acos(cosTheta);
   float target_distance = hypot(X_position-startX,Y_position-startY);
   PID drivePID(target_distance, drive_kp, drive_ki, drive_kd, drive_starti, drive_settle_error, drive_settle_time, drive_timeout);
-  PID headingPID();
 
   while(!drivePID.is_settled()) {
     drivePID.compute(target_distance);

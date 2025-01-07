@@ -1,5 +1,5 @@
 #include "vex.h"
-
+#include "util.h"
 /**
  * Resets the constants for auton movement.
  * Modify these to change the default behavior of functions like
@@ -32,7 +32,7 @@ void odom_constants(){
   chassis.heading_max_voltage = 10;
   chassis.drive_max_voltage = 8;
   chassis.drive_settle_error = 3;
-  chassis.boomerang_lead = .5;
+  chassis.boomerang_lead = .1;
   chassis.drive_min_voltage = 0;
 }
 
@@ -394,19 +394,15 @@ void testDrive() {
   odom_constants();
   conveyor.setVelocity(65, percent);
   intake.setVelocity(100, percent);
-  chassis.set_coordinates(0,0,0);
-  lift.spinTo(-140,deg);
-  chassis.drive_distance(-6);
+  chassis.set_coordinates(-62,0,0);
 
   //try out "lead"; lower lead means less curve; high lead big curve
   //check for imu vibration
   //setback is just offset
-  chassis.drive_to_pose(1,2,3);
+  chassis.drive_timeout = 10000000;
+  //chain with voltage 4w
+  chassis.drive_to_pose(-3,46,0);
   //waitUntil(intake.spin)
-
-
-
-  
 
 }
 

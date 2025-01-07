@@ -1,4 +1,5 @@
 #include "vex.h"
+#include "util.h"
 
 using namespace vex;
 competition Competition;
@@ -116,21 +117,19 @@ bool opticalAutonOn = true;
  */
 
 
-
-
 void opticalDetect() 
 {
   while(opticalAutonOn) 
   {
       if (Optical.hue() > 10 && Optical.hue() < 20) 
       {
-        vex::task::sleep(160);
+        chill(160);
           conveyor.stop();
           lift.spinTo(-700,deg,true);
-          vex::task::sleep(1000);
+          chill(1000);
           lift.spinTo(-140,deg,true);
       }
-      vex::task::sleep(20);
+      chill(20);
   }
 };
 
@@ -184,7 +183,9 @@ void pre_auton() {
     } else if (current_auton_selection > 8){
       current_auton_selection = 0;
     }
-    task::sleep(10);
+    //
+    chill(10);
+
   }
 }
 
@@ -279,6 +280,10 @@ void usercontrol(void) {
       intake.stop();
     }
 
+  //brake test
+  if(Controller1.ButtonB.pressing()) {
+    chassis.drive_stop(hold);
+  }
     
   Controller1.ButtonLeft.pressed([] {
     lift.spinToPosition(-140, degrees);
