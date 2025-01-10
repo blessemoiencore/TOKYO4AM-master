@@ -24,6 +24,9 @@ motor lift = motor(PORT5,ratio6_1, true );
 digital_out grab = digital_out(Brain.ThreeWirePort.H);
 optical Optical = optical(PORT1);
 
+digital_out intakeLift = digital_out(Brain.ThreeWirePort.A); //subject to change
+digital_out doink = digital_out(Brain.ThreeWirePort.B);
+
 //The motor constructor takes motors as (port, ratio, reversed), so for example
 //motor LeftFront = motor(PORT1, ratio6_1, false);
 

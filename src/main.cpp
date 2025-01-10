@@ -234,6 +234,13 @@ vex::task::SkibidiMcgee(opticalDetect);
   testDrive();
   break;
 
+  case 7:
+  red_minus_elims_rush();
+  break;
+
+  case 8:
+  red_pos_goal_rush();
+  break;
  }
 
 }
@@ -329,6 +336,7 @@ int main() {
 
   intake.setVelocity(100, percent);
     lift.setVelocity(100, percent);
+    
 
   if(current_auton_selection == 6) {
   opticalDetect();

@@ -1,5 +1,7 @@
 #include "vex.h"
 #include "util.h"
+
+using namespace vex;
 /**
  * Resets the constants for auton movement.
  * Modify these to change the default behavior of functions like
@@ -16,9 +18,9 @@ void default_constants(){
   chassis.set_swing_constants(12, .3, .001, 2, 15);
 
   // Each exit condition set is in the form of (settle_error, settle_time, timeout).
-  chassis.set_drive_exit_conditions(1.5, 300, 5000);
-  chassis.set_turn_exit_conditions(1, 300, 3000);
-  chassis.set_swing_exit_conditions(1, 300, 3000);
+  chassis.set_drive_exit_conditions(1.5, 300, 2000);
+  chassis.set_turn_exit_conditions(1, 300, 1000); //change settle times maybe
+  chassis.set_swing_exit_conditions(1, 300, 1500);
 }
 
 /**
@@ -30,7 +32,7 @@ void default_constants(){
 void odom_constants(){
   default_constants();
   chassis.heading_max_voltage = 10;
-  chassis.drive_max_voltage = 8;
+  chassis.drive_max_voltage = 10;
   chassis.drive_settle_error = 3;
   chassis.boomerang_lead = .1;
   chassis.drive_min_voltage = 0;
@@ -54,7 +56,7 @@ void setGrab(bool value) {
 }
 
 
-//fixed this false is now true //fixed
+
 void RB_RUSH(){
 odom_constants();
 conveyor.setVelocity(100, percent);
@@ -365,10 +367,10 @@ lift.spinTo(-140,deg,true);
 //works optical sensor just isnt registering in the code
 while (true) {
  if (Optical.hue() > 230 && Optical.hue() < 240) {
-  vex::task::sleep(200);
+  chill(200);
   conveyor.stop();
   lift.spinTo(-400,deg,true);
-  vex::task::sleep(1);
+  chill(1);
   lift.spinTo(0,deg,true);
 }
 
@@ -376,10 +378,10 @@ while (true) {
  if (Optical.hue() <= 20 || Optical.hue() >= 320) {
   lift.spinTo(-140,deg,true);
   conveyor.setVelocity(20,percent);
-  vex::task::sleep(430);
+  chill(430);
   conveyor.stop();
 lift.spinTo(-800,deg,true);
-vex::task::sleep(1);
+chill(1);
 lift.spinTo(0,deg,true);
  }
 
@@ -404,6 +406,104 @@ void testDrive() {
   chassis.drive_to_pose(-3,46,0);
   //waitUntil(intake.spin)
 
+
+
+  //example
+
+  chassis.drive_min_voltage = 3; //in volts
+  chassis.drive_to_pose(1,2,3); // x, y, heading
+  chassis.drive_to_pose(2,3,4); // new setpoint
+  chassis.turn_to_point(2,3);
+
+  //distance chaining?
+  //test using drive_stop after movements
+  //test brake button
+
+
+
 }
 
+/**
+ * @brief scores 6 rings and prepares to rush opposite corner
+ */
 
+void red_minus_elims_rush() {
+  odom_constants();
+  conveyor.setVelocity(100,percent);
+  intake.setVelocity(100,percent);
+  chassis.set_coordinates(-60, 24, 270);
+
+  //grabbing clamp
+  chassis.drive_to_point(-37, 24);
+  chassis.drive_stop(coast);
+  chill(200);
+  grab.set(true);
+  conveyor.spin(fwd);
+
+  //ring rush
+  chassis.turn_to_angle(70);
+  conveyor.stop();
+  chill(200);
+  chassis.drive_to_pose(-8, 33, 0, 0.7); //adjust
+  chassis.drive_stop(coast);
+  intake.spin(fwd);
+  conveyor.spin(fwd);
+  chill(1);
+  chassis.drive_to_point(-8, 56, 0, 5, chassis.heading_max_voltage);
+  chassis.drive_stop(coast);
+
+  //center ring
+  chassis.turn_to_angle(240);
+  chassis.drive_to_point(-15, 52);
+  chassis.drive_stop(coast);
+  chill(200);
+
+  //corner ring
+  chassis.drive_to_pose(-57, 57, 315, 0.5);
+  chassis.drive_stop(coast);
+
+
+  //use swing to angle here to move blue ring 
+  //score alliance
+  chassis.turn_to_angle(180);
+  chill(200);
+  grab.set(false);
+  chassis.drive_to_pose(-60, 12.5, 180);
+  chassis.drive_stop(coast);
+  intakeLift.set(true);
+  chassis.turn_to_angle(135);
+  chill(200);
+  chassis.drive_to_point(-57, 10);
+  chassis.drive_stop(coast);
+  intakeLift.set(false);
+  intake.spinFor(fwd,1,sec);
+  chassis.drive_to_point(-47, 0);
+  chassis.drive_stop(coast);
+  chassis.turn_to_angle(270);
+  chassis.drive_to_point(-57, 0);
+  chassis.drive_stop(coast);
+  conveyor.spin(fwd);
+
+  //ladder and rush
+  chassis.turn_to_angle(45);
+  conveyor.setVelocity(40, percent);
+  chassis.drive_to_pose(-16, 16, 135, .9);
+  chassis.drive_stop(coast);
+  chill(2000);
+
+
+
+
+
+}
+
+/**
+ * @brief rushes goal and pushes corner
+ */
+
+void red_pos_goal_rush() {
+  odom_constants();
+  conveyor.setVelocity(100,percent);
+  intake.setVelocity(100,percent);
+  chassis.set_coordinates(-57,-60,90);
+}

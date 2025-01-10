@@ -23,6 +23,6 @@ void OpticalTest();
 
 void testDrive();
 
-void redMinusElims();
+void red_minus_elims_rush();
 
-void testaoqiBlueImprobv();
+void red_pos_goal_rush();

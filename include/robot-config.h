@@ -16,6 +16,8 @@ extern motor intake;
 extern motor lift;
 extern optical Optical;
 
+extern digital_out intakeLift; //pneumatics intake
+extern digital_out doink;
 
 
 //To set up a motor called LeftFront here, you'd use
