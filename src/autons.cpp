@@ -431,6 +431,7 @@ void red_minus_elims_rush() {
   odom_constants();
   conveyor.setVelocity(100,percent);
   intake.setVelocity(100,percent);
+  //position robot as far away from line as possible
   chassis.set_coordinates(-60, 24, 270);
 
   //grabbing clamp

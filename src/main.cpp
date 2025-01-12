@@ -106,6 +106,8 @@ PORT3,     -PORT4,
 
 );
 
+
+
 int current_auton_selection = 6;
 bool auto_started = false;
 bool opticalAutonOn = true;
@@ -336,7 +338,7 @@ int main() {
 
   intake.setVelocity(100, percent);
     lift.setVelocity(100, percent);
-    
+
 
   if(current_auton_selection == 6) {
   opticalDetect();
